@@ -5,6 +5,8 @@ Playground with go
 - [Setup Dependencies](#Dependencies)
 - [Simple Rest API](#Simple-Rest-Api)
 
+---
+
 ### Dependencies
 
 Using Gin to handle auto-reload
@@ -13,6 +15,8 @@ Using Gin to handle auto-reload
 go get github.com/codegangsta/gin
 gin run main.go
 ```
+
+---
 
 ### Simple Rest Api
 
