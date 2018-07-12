@@ -10,7 +10,6 @@ Playground with go
 Using Gin to handle auto-reload
 >https://github.com/codegangsta/gin
 ```
-https://github.com/codegangsta/gin
 go get github.com/codegangsta/gin
 gin run main.go
 ```
@@ -20,6 +19,12 @@ gin run main.go
 What is it ?
 
 Minimum code to set up rest api using go
+
+Where is the code ?
+
+```
+cd ./simpleRestEndpoint
+```
 
 How to run ?
 ```
