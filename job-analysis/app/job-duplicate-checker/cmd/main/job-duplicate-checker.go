@@ -6,8 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/nadzir/scratchpad-go/job-analysis/job-crawler/pkg/event"
-
+	event "github.com/nadzir/scratchpad-go/job-analysis/pkg/event/jobEvent"
 	queue "github.com/nadzir/scratchpad-go/job-analysis/pkg/queue/receive"
 )
 
