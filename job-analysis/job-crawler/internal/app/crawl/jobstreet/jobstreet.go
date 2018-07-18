@@ -4,16 +4,19 @@ import (
 	"fmt"
 
 	"github.com/gocolly/colly"
-	"github.com/nadzir/scratchpad-go/job-analysis/job-crawler/pkg/event"
+	event "github.com/nadzir/scratchpad-go/job-analysis/pkg/event/jobEvent"
+	log "github.com/sirupsen/logrus"
 )
 
+// Crawl : Begin crawling url for jobstreet
+//         Pattern for indeed url :
+//         https://www.jobstreet.com.sg/en/job-search/job-vacancy/%d/?src=16&srcr=&ojs=6 where d is 1,2,3..
 func Crawl() {
-
 	const numOfPages = 100
-
 	// crawlURL("https://www.jobstreet.com.sg/en/job-search/job-vacancy.php?ojs=6")
 	for i := 1; i < numOfPages; i++ {
 		url := fmt.Sprintf("https://www.jobstreet.com.sg/en/job-search/job-vacancy/%d/?src=16&srcr=&ojs=6", i)
+		log.Info(url)
 		crawlURL(url)
 	}
 }
@@ -26,8 +29,22 @@ func crawlURL(url string) {
 		jobTitle := e.ChildText("#position_title")
 		companyName := e.ChildText("#company_name a")
 		jobDescription := e.ChildText("#job_description")
+		postingDate := e.ChildText("#posting_date")
+		closingDate := e.ChildText("#closing_date")
 
-		event.CreateJobEvent(jobTitle, companyName, url, jobLink, jobDescription)
+		jobInfo := event.JobInfo{
+			"jobstreet",
+			url,
+			jobLink,
+			jobTitle,
+			companyName,
+			jobDescription,
+			postingDate,
+			closingDate,
+		}
+
+		jobInfo.Log()
+		event.CrawledJob(jobInfo)
 	})
 
 	c.OnHTML(".panel-body", func(e *colly.HTMLElement) {
@@ -41,7 +58,5 @@ func crawlURL(url string) {
 	// 	fmt.Println("Visiting", r.URL)
 	// })
 
-	fmt.Println("Crawling", url)
 	c.Visit(url)
-
 }

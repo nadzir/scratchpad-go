@@ -3,11 +3,10 @@ package main
 import (
 	"fmt"
 
-	"github.com/nadzir/scratchpad-go/job-analysis/job-crawler/internal/app/crawl/jobcrawler"
+	"github.com/nadzir/scratchpad-go/job-analysis/job-crawler/internal/app/crawl"
 )
 
 func main() {
-	go jobcrawler.BeginCrawl()
-
+	go crawl.Begin()
 	fmt.Scanln()
 }

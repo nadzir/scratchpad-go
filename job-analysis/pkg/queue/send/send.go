@@ -34,7 +34,7 @@ func Send(msg []byte) {
 	// Declare queue
 	q, err := ch.QueueDeclare(
 		"events", // name
-		false,    // durable
+		true,     // durable
 		false,    // delete when unused
 		false,    // exclusive
 		false,    // no-wait
@@ -52,6 +52,40 @@ func Send(msg []byte) {
 			ContentType: "text/plain",
 			Body:        msg,
 		})
-	// log.Printf(" [x] Sent %s", msg)
 	failOnError(err, "Failed to publish a message")
 }
+
+// // Send : Publish to queue
+// func Send(msg []byte) {
+// 	conn, err := amqp.Dial(MqHost)
+// 	failOnError(err, "Failed to connect to RabbitMQ")
+// 	defer conn.Close()
+
+// 	ch, err := conn.Channel()
+// 	failOnError(err, "Failed to open a channel")
+// 	defer ch.Close()
+
+// 	err = ch.ExchangeDeclare(
+// 		"events", // name
+// 		"fanout", // type
+// 		true,     // durable
+// 		false,    // auto-deleted
+// 		false,    // internal
+// 		false,    // no-wait
+// 		nil,      // arguments
+// 	)
+// 	failOnError(err, "Failed to declare an exchange")
+
+// 	err = ch.Publish(
+// 		"events", // exchange
+// 		"",       // routing key
+// 		false,    // mandatory
+// 		false,    // immediate
+// 		amqp.Publishing{
+// 			ContentType: "text/plain",
+// 			Body:        []byte(msg),
+// 		})
+// 	failOnError(err, "Failed to publish a message")
+
+// 	// log.Printf(" [x] Sent %s", body)
+// }
