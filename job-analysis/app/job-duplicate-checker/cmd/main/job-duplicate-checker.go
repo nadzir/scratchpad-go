@@ -51,17 +51,17 @@ func main() {
 			// jobDesc := jobInfo.Description
 			jobInfoResults := jobHashedMap.insertToMap(jobInfo)
 			if jobInfoResults != (event.JobInfo{}) &&
-				jobInfoResults.JobUrl != jobInfo.JobUrl {
+				jobInfoResults.JobURL != jobInfo.JobURL {
 				fmt.Println()
 				fmt.Println("Duplicated result found")
 				fmt.Println("Result 1")
 				fmt.Println(jobInfoResults.JobTitle)
 				fmt.Println(jobInfoResults.CompanyName)
-				fmt.Println(jobInfoResults.JobUrl)
+				fmt.Println(jobInfoResults.JobURL)
 				fmt.Println("Result 2")
 				fmt.Println(jobInfo.JobTitle)
 				fmt.Println(jobInfo.CompanyName)
-				fmt.Println(jobInfo.JobUrl)
+				fmt.Println(jobInfo.JobURL)
 			}
 		}
 	}

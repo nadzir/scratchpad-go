@@ -3,8 +3,9 @@ package jobstreet
 import (
 	"fmt"
 
+	"github.com/nadzir/scratchpad-go/job-analysis/pkg/db/jobdb"
+
 	"github.com/gocolly/colly"
-	event "github.com/nadzir/scratchpad-go/job-analysis/pkg/event/jobEvent"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -32,7 +33,7 @@ func crawlURL(url string) {
 		postingDate := e.ChildText("#posting_date")
 		closingDate := e.ChildText("#closing_date")
 
-		jobInfo := event.JobInfo{
+		jobInfo := jobdb.JobInfo{
 			"jobstreet",
 			url,
 			jobLink,
@@ -44,7 +45,7 @@ func crawlURL(url string) {
 		}
 
 		jobInfo.Log()
-		event.CrawledJob(jobInfo)
+		jobdb.InsertJobTable(jobInfo)
 	})
 
 	c.OnHTML(".panel-body", func(e *colly.HTMLElement) {

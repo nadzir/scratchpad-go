@@ -1,0 +1,48 @@
+stderr: stat main.go: no such file or directory
+, cmd err: exit status 1stderr: stat main.go: no such file or directory
+, cmd err: exit status 1stderr: # command-line-arguments
+./main.go:29:31: undefined: totalJob
+, cmd err: exit status 2stderr: # command-line-arguments
+./main.go:29:31: undefined: totalJob
+, cmd err: exit status 2stderr: # command-line-arguments
+./main.go:12:10: undefined: simplejson
+, cmd err: exit status 2stderr: # command-line-arguments
+./main.go:12:10: undefined: simplejson
+, cmd err: exit status 2stderr: # command-line-arguments
+./main.go:12:10: undefined: simplejson
+, cmd err: exit status 2stderr: # command-line-arguments
+./main.go:29:7: undefined: cors
+, cmd err: exit status 2stderr: main.go:10:2: cannot find package "github.com/rs/cors" in any of:
+	/usr/local/Cellar/go/1.10.3/libexec/src/github.com/rs/cors (from $GOROOT)
+	/Users/nad/Documents/go/src/github.com/rs/cors (from $GOPATH)
+, cmd err: exit status 1stderr: # command-line-arguments
+./main.go:35:23: undefined: router
+, cmd err: exit status 2stderr: # command-line-arguments
+./main.go:35:23: undefined: wr
+, cmd err: exit status 2stderr: # command-line-arguments
+./main.go:35:2: handler declared and not used
+, cmd err: exit status 2stderr: # command-line-arguments
+./main.go:28:31: undefined: jobCount
+, cmd err: exit status 2stderr: # command-line-arguments
+./main.go:14:7: invalid character literal (more than one character)
+, cmd err: exit status 2stderr: # command-line-arguments
+./main.go:16:39: undefined: jobCount
+, cmd err: exit status 2stderr: # command-line-arguments
+./main.go:16:39: undefined: jobCount
+, cmd err: exit status 2stderr: # command-line-arguments
+./main.go:16:2: undefined: apihandler
+, cmd err: exit status 2stderr: # command-line-arguments
+./main.go:16:2: undefined: apihandler
+, cmd err: exit status 2stderr: # github.com/nadzir/scratchpad-go/job-analysis/app/job-stats/internal/apihandler
+../../internal/apihandler/job.go:22:2: count declared and not used
+, cmd err: exit status 2stderr: # github.com/nadzir/scratchpad-go/job-analysis/app/job-stats/internal/apihandler
+../../internal/apihandler/job.go:21:6: source declared and not used
+, cmd err: exit status 2stderr: # github.com/nadzir/scratchpad-go/job-analysis/app/job-stats/internal/apihandler
+../../internal/apihandler/job.go:27:14: undefined: id
+, cmd err: exit status 2stderr: # github.com/nadzir/scratchpad-go/job-analysis/pkg/db/jobdb
+../../../../pkg/db/jobdb/jobdb.go:135:26: undefined: Json
+, cmd err: exit status 2stderr: # github.com/nadzir/scratchpad-go/job-analysis/pkg/db/jobdb
+../../../../pkg/db/jobdb/jobdb.go:135:26: undefined: Json
+, cmd err: exit status 2stderr: # github.com/nadzir/scratchpad-go/job-analysis/app/job-stats/internal/apihandler
+../../internal/apihandler/job.go:24:19: vars.GET undefined (type url.Values has no field or method GET, but does have Get)
+, cmd err: exit status 2

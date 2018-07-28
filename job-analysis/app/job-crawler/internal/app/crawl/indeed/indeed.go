@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/gocolly/colly"
-	event "github.com/nadzir/scratchpad-go/job-analysis/pkg/event/jobEvent"
+	"github.com/nadzir/scratchpad-go/job-analysis/pkg/db/jobdb"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -28,11 +28,11 @@ func crawlURL(url string) {
 	var jobLink string
 
 	c.OnHTML("html", func(e *colly.HTMLElement) {
-		jobTitle := e.ChildText(".jobtitle")
-		companyName := e.ChildText(".company")
+		jobTitle := e.ChildText("[data-tn-component=jobHeader] .jobtitle")
+		companyName := e.ChildText("[data-tn-component=jobHeader] .company")
 		jobDescription := e.ChildText("#job_summary")
 
-		jobInfo := event.JobInfo{
+		jobInfo := jobdb.JobInfo{
 			"indeed",
 			url,
 			jobLink,
@@ -42,12 +42,14 @@ func crawlURL(url string) {
 			"",
 			"",
 		}
+		// if jobTitle != "" && companyName != "" && jobDescription != "" {
 		jobInfo.Log()
-		event.CrawledJob(jobInfo)
+		jobdb.InsertJobTable(jobInfo)
+		// }
 	})
 
 	c.OnHTML(".row", func(e *colly.HTMLElement) {
-		jobLink = e.ChildAttr(".jobtitle", "href")
+		jobLink = e.ChildAttr(".turnstileLink", "href")
 		if jobLink != "" {
 			e.Request.Visit(jobLink)
 		}
