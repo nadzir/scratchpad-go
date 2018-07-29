@@ -6,7 +6,11 @@ import (
 )
 
 // Begin : Begin crawling
-func Begin() {
-	go jobstreet.Crawl()
-	go indeed.Crawl()
+func Begin(source string) {
+	switch source {
+	case "jobstreet":
+		go jobstreet.Crawl()
+	case "indeed":
+		go indeed.Crawl()
+	}
 }
