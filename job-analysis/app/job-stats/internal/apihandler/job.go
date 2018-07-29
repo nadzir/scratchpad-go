@@ -24,7 +24,7 @@ func jobCount(w http.ResponseWriter, r *http.Request) {
 	date := vars.Get("date")
 
 	json := simplejson.New()
-	json.Set("total", jobdb.SelectTotalJobCount(jobSource, date))
+	json.Set("job", jobdb.SelectTotalJobCount(jobSource, date))
 
 	payload, err := json.MarshalJSON()
 	if err != nil {
