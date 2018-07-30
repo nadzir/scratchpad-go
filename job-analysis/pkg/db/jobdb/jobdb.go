@@ -22,13 +22,16 @@ const (
 	CREATE TABLE IF NOT EXISTS jobsListing (
 		id int(11) unsigned NOT NULL AUTO_INCREMENT,
 		source varchar(30) DEFAULT NULL,
-		crawledURL varchar(100)    DEFAULT NULL,
-		jobURL varchar(200)    DEFAULT NULL,
-		jobTitle varchar(100)    DEFAULT NULL,
-		companyName varchar(100)    DEFAULT NULL,
+		crawledURL varchar(500)    DEFAULT NULL,
+		jobURL varchar(500)    DEFAULT NULL,
+		jobTitle varchar(500)    DEFAULT NULL,
+		companyName varchar(500)    DEFAULT NULL,
 		description longtext   ,
 		postingDate varchar(50)    DEFAULT NULL,
 		closingDate varchar(50)    DEFAULT NULL,
+		minSalary int DEFAULT NULL,
+		maxSalary int DEFAULT NULL,
+		salaryType int DEFAULT NULL,
 		crawledAt DATE DEFAULT NULL,
 		PRIMARY KEY (id)
 	  ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;`
@@ -43,8 +46,13 @@ const (
 		description,
 		postingDate,
 		closingDate,
-		crawledAt
-	) VALUES (?,?,?,?,?,?,?,?,?)`
+		crawledAt)   
+		SELECT ?,?,?,?,?,?,?,?,?
+		FROM jobsListing
+		WHERE source = ?
+		and jobURL = ?
+		and crawledAt = ?
+		`
 )
 
 func dbConn() (db *sql.DB) {
@@ -82,15 +90,15 @@ type JobInfo struct {
 // Log : JobInfo loggin
 func (j *JobInfo) Log() {
 	log.WithFields(log.Fields{
-		"source":      j.Source,
-		"crawled url": j.CrawledURL,
-		"job url":     j.JobURL,
-		"job title":   j.JobTitle,
-		"company":     j.CompanyName,
+		// "source": j.Source,
+		// "crawled url": j.CrawledURL,
+		"job title": j.JobTitle,
+		"company":   j.CompanyName,
+		"job url":   j.JobURL,
 		// "desc":         j.Description,
-		"posting date": j.PostingDate,
-		"closing date": j.ClosingDate,
-	}).Info("Job Info")
+		// "posting date": j.PostingDate,
+		// "closing date": j.ClosingDate,
+	}).Info(j.Source)
 }
 
 // InsertJobTable : Inserting to Job Table
@@ -107,8 +115,11 @@ func InsertJobTable(jobInfo JobInfo) {
 		jobInfo.JobTitle,
 		jobInfo.CompanyName,
 		jobInfo.Description,
-		NewNullString(jobInfo.PostingDate),
-		NewNullString(jobInfo.ClosingDate),
+		newNullString(jobInfo.PostingDate),
+		newNullString(jobInfo.ClosingDate),
+		time.Now().Local(),
+		jobInfo.Source,
+		jobInfo.JobURL,
 		time.Now().Local(),
 	)
 	if queryErr != nil {
@@ -223,7 +234,7 @@ func SelectPopularCompany(source, date string) *simplejson.Json {
 	return json
 }
 
-func NewNullString(s string) sql.NullString {
+func newNullString(s string) sql.NullString {
 	if len(s) == 0 {
 		return sql.NullString{}
 	}
@@ -231,4 +242,28 @@ func NewNullString(s string) sql.NullString {
 		String: s,
 		Valid:  true,
 	}
+}
+
+func UpdateSalary(id, minSalary, maxSalary string) {
+	updateQuery := `
+	UPDATE jobslisting
+	set minSalary = ?,
+	maxSalary = ?
+	where id = ?
+	`
+	db := dbConn()
+	stmt, err := db.Prepare(updateQuery)
+	if err != nil {
+		log.Fatal(err)
+	}
+	_, queryErr := stmt.Exec(
+		newNullString(minSalary),
+		newNullString(maxSalary),
+		id,
+	)
+	if queryErr != nil {
+		log.Warn(queryErr)
+	}
+
+	stmt.Close()
 }

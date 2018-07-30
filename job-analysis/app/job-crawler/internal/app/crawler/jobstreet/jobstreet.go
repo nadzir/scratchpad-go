@@ -3,10 +3,9 @@ package jobstreet
 import (
 	"fmt"
 
-	"github.com/nadzir/scratchpad-go/job-analysis/pkg/db/jobdb"
-
 	"github.com/gocolly/colly"
-	log "github.com/sirupsen/logrus"
+	"github.com/nadzir/scratchpad-go/job-analysis/pkg/db/jobdb"
+	"github.com/nadzir/scratchpad-go/job-analysis/pkg/worker"
 )
 
 // Crawl : Begin crawling url for jobstreet
@@ -14,11 +13,17 @@ import (
 //         https://www.jobstreet.com.sg/en/job-search/job-vacancy/%d/?src=16&srcr=&ojs=6 where d is 1,2,3..
 func Crawl() {
 	const numOfPages = 99999
+	const numOfWorkers = 10
+
+	urlChannel := make(chan string)
+
+	for w := 0; w <= numOfWorkers; w++ {
+		go worker.Crawler(urlChannel, crawlURL)
+	}
 	// crawlURL("https://www.jobstreet.com.sg/en/job-search/job-vacancy.php?ojs=6")
 	for i := 1; i < numOfPages; i++ {
 		url := fmt.Sprintf("https://www.jobstreet.com.sg/en/job-search/job-vacancy/%d/?src=16&srcr=&ojs=6", i)
-		log.Info(url)
-		crawlURL(url)
+		urlChannel <- url
 	}
 }
 
